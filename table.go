@@ -284,6 +284,7 @@ func (rt *RoutingTable) addPeer(p peer.ID) (evicted peer.ID, err error) {
 	}
 
 	if bucketID == len(rt.buckets)-1 {
+		fmt.Printf("next bucket because of: %v", p.String())
 		// if the bucket is too large and this is the last bucket (i.e. wildcard), unfold it.
 		rt.nextBucket()
 		// the structure of the table has changed, so let's recheck if the peer now has a dedicated bucket.
@@ -325,6 +326,8 @@ func (rt *RoutingTable) removePeer(p peer.ID) {
 				log.Errorf("unable to request replacement for peer=%s as queue for replace requests is full", p)
 			}
 		}
+
+		fmt.Printf("old peer dropped removePeer, dropped: %v", p.String())
 
 		// peer removed callback
 		rt.PeerRemoved(p)
